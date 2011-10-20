@@ -27,4 +27,20 @@ describe TreasureHunt::Hunter do
       @jane.points.should == 3*7
     end
   end
+
+  context "when using DSL" do
+    before do
+      Reward.delete_all
+      @invite_friends = Reward.create(:name => 'Invite friends', :points => 50, :every => 1.day)
+    end
+
+    it "should achieve and lock reward" do
+      @jane.can_achieve?(:invite_friends).should be_true
+      @jane.achieve!(:invite_friends).should be_persisted
+      @jane.reload
+      @jane.points.should == 50
+      @jane.can_achieve?(:invite_friends).should be_false
+      @jane.time_to_unlock(:invite_friends).should <= 1.day
+    end
+  end
 end

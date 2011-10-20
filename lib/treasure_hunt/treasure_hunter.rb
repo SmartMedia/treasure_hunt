@@ -23,6 +23,32 @@ module TreasureHunt
           self.achievements.collect(&:points).sum rescue 0
         end
 
+        def can_achieve?(reward)
+          reward = ::Reward.find_by_name(reward.to_s.humanize) if reward.is_a? Symbol
+
+          ::Achievement.new(:user => self, :reward => reward).valid?
+        end
+
+        def achieve!(reward)
+          reward = ::Reward.find_by_name(reward.to_s.humanize) if reward.is_a? Symbol
+          achievement = ::Achievement.create(:reward => reward)
+          self.achievements << achievement
+
+          achievement
+        end
+
+        def time_to_unlock(reward)
+          reward = ::Reward.find_by_name(reward.to_s.humanize) if reward.is_a? Symbol
+          achievement = ::Achievement.new(:user => self, :reward => reward)
+          remaining = (achievement.find_all_recently_achieved.last.updated_at rescue DateTime.new ) + reward.every.seconds - DateTime.now
+
+          [0, remaining].max
+        end
+
+        def has_achievement?(reward)
+          reward = ::Reward.find_by_name(reward.to_s.humanize) if reward.is_a? Symbol
+          achievements.where(:reward_id => reward.id).any?
+        end
       end
     end
 
