@@ -34,5 +34,5 @@ class Achievement < ActiveRecord::Base
 end
 
 class Reward < ActiveRecord::Base
-  has_many :achievements
+  include TreasureHunt::Reward
 end
