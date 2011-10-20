@@ -1,6 +1,6 @@
 = treasure_hunt
 
-Description goes here.
+DSL and models for application User's Reward management.
 
 == Contributing to treasure_hunt
  
