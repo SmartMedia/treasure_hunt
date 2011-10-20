@@ -14,13 +14,14 @@ ActiveRecord::Schema.define do
     t.references :user
     t.references :reward
     t.integer :points
+    t.timestamps
   end
 
   create_table :rewards, :force => true do |t|
     t.string :name, :null => false
-    t.integer :points
-    t.integer :every
-    t.integer :limit
+    t.integer :points, :default => 0, :null => false
+    t.integer :every, :default => 0, :null => false
+    t.integer :limit, :default => 1, :null => false
   end
 end
 
@@ -29,11 +30,7 @@ class User < ActiveRecord::Base
 end
 
 class Achievement < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :reward
-
-  # TODO remove this
-  before_save Proc.new {|achievement| achievement.points = achievement.reward.points}
+  include TreasureHunt::Achievement
 end
 
 class Reward < ActiveRecord::Base
