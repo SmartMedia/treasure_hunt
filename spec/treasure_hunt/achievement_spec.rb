@@ -39,8 +39,15 @@ describe TreasureHunt::Achievement do
 
   context "when validating if achievement is possible" do
     before do
+      @no_limit = Reward.create(:name => 'No limit')
       @one_per_day = Reward.create(:name => 'One per day', :every => 1.day, :limit => 1)
       @three_per_day = Reward.create(:name => 'Three per day', :every => 1.day, :limit => 3)
+    end
+
+    it "should allow no-limit reward multiple times" do
+      5.times do
+        Achievement.create(:user => @joe, :reward => @no_limit).should be_valid
+      end
     end
 
     it "should not allow 2 one-per-day in the same day" do
