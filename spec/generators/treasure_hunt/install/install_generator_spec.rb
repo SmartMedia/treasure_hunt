@@ -2,11 +2,11 @@ require 'spec_helper'
 require 'action_controller'
 require 'generator_spec/test_case'
 
-require 'generators/install/install_generator'
+require 'generators/treasure_hunt/install/install_generator'
 
 describe TreasureHunt::Generators::InstallGenerator do
   include GeneratorSpec::TestCase
-  destination File.expand_path('../../../../../tmp', __FILE__)
+  destination File.expand_path('../../../../tmp', __FILE__)
 
   before do
     prepare_destination
