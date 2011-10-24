@@ -19,8 +19,8 @@ module TreasureHunt
 
       module InstanceMethods
 
-        def points
-          self.achievements.collect(&:points).sum rescue 0
+        def update_points
+          self.update_attribute(:points, self.achievements.sum(:points))
         end
 
         def can_achieve?(reward)

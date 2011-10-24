@@ -25,6 +25,18 @@ describe TreasureHunt::Hunter do
       end
       @jane.reload
       @jane.points.should == 3*7
+
+      last = @jane.achievements.last
+      last.points = 5
+      last.save
+
+      @jane.reload
+      @jane.points.should == 2*7 + 5
+
+      @jane.achievements.destroy(last)
+
+      @jane.reload
+      @jane.points.should == 2*7
     end
   end
 

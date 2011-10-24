@@ -12,6 +12,9 @@ module TreasureHunt
       validate :reward_cannot_be_achieved_above_limits
 
       before_save :fill_points
+
+      after_save :update_user_points
+      after_destroy :update_user_points
     end
 
     module ClassMethods
@@ -51,6 +54,11 @@ module TreasureHunt
         find_all_similar_and_younger.limit(limit)
       end
 
+    end
+
+    private
+    def update_user_points
+      self.user.update_points
     end
 
   end

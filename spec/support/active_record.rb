@@ -8,6 +8,7 @@ ActiveRecord::Migration.verbose = false
 ActiveRecord::Schema.define do
   create_table :users, :force => true do |t|
     t.string :name, :null => false
+    t.integer :points, :default => 0, :null => false
   end
 
   create_table :achievements, :force => true do |t|
