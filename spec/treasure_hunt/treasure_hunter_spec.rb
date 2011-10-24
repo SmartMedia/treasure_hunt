@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe TreasureHunt::Hunter do
   before do
+    User.delete_all
     @jane = User.create(:name => 'Jane')
     @joe = User.create(:name => 'Joe')
   end
@@ -37,6 +38,31 @@ describe TreasureHunt::Hunter do
 
       @jane.reload
       @jane.points.should == 2*7
+    end
+
+    it "should get better rank" do
+      User.count.should == 2
+
+      @jane.rank.should == 1
+      @joe.rank.should == 1
+
+      @jane.achievements << Achievement.create(:reward => @reward)
+      [@jane, @joe].each(&:reload)
+
+      @jane.rank.should == 1
+      @joe.rank.should == 2
+
+      @joe.achievements << Achievement.create(:reward => @reward)
+      [@jane, @joe].each(&:reload)
+
+      @jane.rank.should == 1
+      @joe.rank.should == 1
+
+      @joe.achievements << Achievement.create(:reward => @reward)
+      [@jane, @joe].each(&:reload)
+
+      @jane.rank.should == 2
+      @joe.rank.should == 1
     end
   end
 

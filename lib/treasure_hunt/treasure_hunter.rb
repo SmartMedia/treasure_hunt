@@ -19,6 +19,10 @@ module TreasureHunt
 
       module InstanceMethods
 
+        def rank
+          self.class.count(:all, :conditions => ['points > ?', self.points]) + 1
+        end
+
         def update_points
           self.update_attribute(:points, self.achievements.sum(:points))
         end
