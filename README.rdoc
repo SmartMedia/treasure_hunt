@@ -2,6 +2,49 @@
 
 DSL and models for application User's Reward management.
 
+== Installation
+
+Add to your Gemfile
+
+ gem 'treasure_hunt'
+
+Run generator
+
+ rails generate treasure_hunt:install
+
+Add :points column to your users table
+
+ rails generate migration AddPointsToUsers points:integer
+
+Run migrations
+
+ rake db:migrate
+
+Finally add 'acts_as_treasure_hunter' to your model:
+
+ class User < ActiveRecord:Base
+  acts_as_treasure_hunter
+  # ...
+ end
+
+== Usage
+
+Set up your rewards (only once)
+
+ Reward.create(:name => 'Invite friends', :points => 50, :every => 1.day)
+
+Use it!
+
+ jane = User.find(42)
+
+ if @jane.can_achieve?(:invite_friends)
+   jane.achieve!(:invite_friends)
+   jane.reload
+ end
+
+ @points = jane.points
+ @time_to_unlock = @jane.time_to_unlock(:invite_friends)
+
 == Contributing to treasure_hunt
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
