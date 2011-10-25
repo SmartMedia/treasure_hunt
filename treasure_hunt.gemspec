@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{treasure_hunt}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Jan Dupal}]
-  s.date = %q{2011-10-23}
+  s.date = %q{2011-10-25}
   s.description = %q{Allow your application users to start fantastic hunt for big treasure}
   s.email = %q{dupal.j@gmail.com}
   s.extra_rdoc_files = [
@@ -40,7 +40,8 @@ Gem::Specification.new do |s|
     "spec/support/active_record.rb",
     "spec/treasure_hunt/achievement_spec.rb",
     "spec/treasure_hunt/reward_spec.rb",
-    "spec/treasure_hunt/treasure_hunter_spec.rb"
+    "spec/treasure_hunt/treasure_hunter_spec.rb",
+    "treasure_hunt.gemspec"
   ]
   s.homepage = %q{http://github.com/SmartMedia/treasure_hunt}
   s.licenses = [%q{MIT}]
