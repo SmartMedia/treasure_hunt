@@ -6,6 +6,9 @@ describe TreasureHunt::Achievement do
     Reward.delete_all
     @joe = User.create(:name => 'Joe')
     @win = Reward.create(:name => 'Win!', :points => 42)
+
+    @today = Time.parse('21.12.2012')
+    @tomorrow = Time.parse('22.12.2012')
   end
 
   context "when creating achievement" do
@@ -37,7 +40,7 @@ describe TreasureHunt::Achievement do
     end
   end
 
-  context "when validating if achievement is possible" do
+  context "when validating if achievement is possible (:ever)" do
     before do
       @no_limit = Reward.create(:name => 'No limit')
       @one_per_day = Reward.create(:name => 'One per day', :every => 1.day, :limit => 1)
@@ -77,6 +80,43 @@ describe TreasureHunt::Achievement do
         Achievement.create(:user => @joe, :reward => @three_per_day).should be_valid
       end
       Achievement.create(:user => @joe, :reward => @three_per_day).should_not be_valid
+    end
+  end
+
+  context "when validating if achievement is possible (:once)" do
+    before do
+      @once_a_day = Reward.create(:name => 'One per day', :once => 1.day, :limit => 1)
+      @twice_a_day = Reward.create(:name => 'After and before lunch', :once => 12.hours, :limit => 1)
+    end
+
+    it "should allow 2 once-a-day rewards in different days" do
+      Time.stub!(:now).and_return(@today)
+      Achievement.create(:user => @joe, :reward => @once_a_day).should be_valid
+
+      Time.stub!(:now).and_return(@tomorrow)
+      Achievement.create(:user => @joe, :reward => @once_a_day).should be_valid
+    end
+
+    it "should not allow 2 once-a-day rewards in the same day" do
+      Time.stub!(:now).and_return(@today)
+      Achievement.create(:user => @joe, :reward => @once_a_day).should be_valid
+      Achievement.create(:user => @joe, :reward => @once_a_day).should_not be_valid
+    end
+
+    it "should validace 2 once-a-day rewards before and after lunch" do
+      # Before lunch
+      Time.stub!(:now).and_return(@today + 10.hours)
+      Achievement.create(:user => @joe, :reward => @twice_a_day).should be_valid
+
+      Time.stub!(:now).and_return(@today + 11.hours)
+      Achievement.create(:user => @joe, :reward => @twice_a_day).should_not be_valid
+
+      # After lunch
+      Time.stub!(:now).and_return(@today + 13.hours)
+      Achievement.create(:user => @joe, :reward => @twice_a_day).should be_valid
+
+      Time.stub!(:now).and_return(@today + 23.hours)
+      Achievement.create(:user => @joe, :reward => @twice_a_day).should_not be_valid
     end
   end
 end

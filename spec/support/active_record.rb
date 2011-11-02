@@ -22,6 +22,7 @@ ActiveRecord::Schema.define do
     t.string :name, :null => false
     t.integer :points, :default => 0, :null => false
     t.integer :every, :default => 0, :null => false
+    t.integer :once, :default => 0, :null => false
     t.integer :limit, :default => 1, :null => false
   end
 end

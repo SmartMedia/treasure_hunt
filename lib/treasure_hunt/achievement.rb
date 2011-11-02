@@ -43,9 +43,7 @@ module TreasureHunt
       end
 
       def find_all_similar_and_younger
-        age = Time.now - self.reward.every rescue 0
-
-        find_all_similar.where('updated_at > ?', age)
+        find_all_similar.where('updated_at >= ?', time_threshold)
       end
 
       def find_all_recently_achieved
@@ -61,5 +59,20 @@ module TreasureHunt
       self.user.update_points
     end
 
+    def time_threshold
+      once = self.reward.once rescue 0
+
+      if once > 0
+        if once <= 1.day
+          threshold = Time.now.midnight + (Time.now.seconds_since_midnight / once).floor * once
+        else
+          raise NotImplementedError
+        end
+      else
+        threshold = Time.now - self.reward.every rescue 0
+      end
+
+      threshold
+    end
   end
 end
