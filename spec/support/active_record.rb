@@ -15,6 +15,7 @@ ActiveRecord::Schema.define do
     t.references :user
     t.references :reward
     t.integer :points
+    t.references :targetable, :polymorphic => true
     t.timestamps
   end
 
@@ -24,6 +25,10 @@ ActiveRecord::Schema.define do
     t.integer :every, :default => 0, :null => false
     t.integer :limit, :default => 1, :null => false
   end
+
+  create_table :chosen_answers, :force => true do |t|
+    t.integer :answer_id
+  end
 end
 
 class User < ActiveRecord::Base
@@ -32,8 +37,13 @@ end
 
 class Achievement < ActiveRecord::Base
   include TreasureHunt::Achievement
+
+  has_one :chosen_answer, :as => :targetable
 end
 
 class Reward < ActiveRecord::Base
   include TreasureHunt::Reward
+end
+
+class ChosenAnswer < ActiveRecord::Base
 end

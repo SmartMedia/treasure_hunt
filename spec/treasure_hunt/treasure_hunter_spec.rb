@@ -5,6 +5,7 @@ describe TreasureHunt::Hunter do
     User.delete_all
     @jane = User.create(:name => 'Jane')
     @joe = User.create(:name => 'Joe')
+    @chosen_answer = ChosenAnswer.create(:answer_id => 1)
   end
 
   context "when achieved something" do
@@ -17,6 +18,12 @@ describe TreasureHunt::Hunter do
       @jane.achievements.create(:reward => @reward)
 
       @jane.rewards.should =~ [@reward]
+    end
+
+    it "should have target" do
+      @jane.achievements.create(:reward => @reward, :targetable => @chosen_answer)
+
+      @jane.achievements.last.targetable.should == @chosen_answer
     end
 
     it "should receive points" do
@@ -70,6 +77,7 @@ describe TreasureHunt::Hunter do
     before do
       Reward.delete_all
       @invite_friends = Reward.create(:name => 'Invite friends', :points => 50, :every => 1.day)
+      @corret_answer = Reward.create(:name => 'Correct answer', :points => 50)
     end
 
     it "should achieve and lock reward" do
@@ -79,6 +87,12 @@ describe TreasureHunt::Hunter do
       @jane.points.should == 50
       @jane.can_achieve?(:invite_friends).should be_false
       @jane.time_to_unlock(:invite_friends).should <= 1.day
+    end
+
+    it "should achieve and log target" do
+      @jane.can_achieve?(:correct_answer).should be_true
+      @jane.achieve!(:correct_answer, @chosen_answer).should be_persisted
+      @jane.achievements.last.targetable.should == @chosen_answer
     end
   end
 end

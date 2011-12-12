@@ -5,6 +5,7 @@ module TreasureHunt
     included do
       belongs_to :user
       belongs_to :reward
+      belongs_to :targetable, :polymorphic => true
 
       validates_associated :user, :reward
       validates_presence_of :user, :reward

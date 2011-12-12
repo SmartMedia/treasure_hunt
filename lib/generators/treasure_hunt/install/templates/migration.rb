@@ -4,6 +4,7 @@ class CreateTreasureHuntTables < ActiveRecord::Migration
       t.references :user
       t.references :reward
       t.integer :points
+      t.references :targetable, :polymorphic => true
 
       t.timestamps
     end

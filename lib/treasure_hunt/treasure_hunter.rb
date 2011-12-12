@@ -33,9 +33,9 @@ module TreasureHunt
           ::Achievement.new(:user => self, :reward => reward).valid?
         end
 
-        def achieve!(reward)
+        def achieve!(reward, target=nil)
           reward = ::Reward.find_by_name(reward.to_s.humanize) if reward.is_a? Symbol
-          achievement = ::Achievement.create(:reward => reward)
+          achievement = ::Achievement.create(:reward => reward, :targetable => target)
           self.achievements << achievement
 
           achievement
