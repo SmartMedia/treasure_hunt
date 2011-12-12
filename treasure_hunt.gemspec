@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{treasure_hunt}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Jan Dupal}]
-  s.date = %q{2011-10-25}
+  s.date = %q{2011-12-12}
   s.description = %q{Allow your application users to start fantastic hunt for big treasure}
   s.email = %q{dupal.j@gmail.com}
   s.extra_rdoc_files = [
