@@ -18,5 +18,10 @@ describe Reward do
       reward.limit.should == 1
       reward.every.should == 0
     end
+
+    it "should not allow two rewards with the same name" do
+      reward = Reward.create(:name => 'Unique reward')
+      Reward.create(:name => 'Unique reward').valid?.should be_false
+    end
   end
 end
