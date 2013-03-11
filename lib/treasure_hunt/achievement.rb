@@ -3,6 +3,8 @@ module TreasureHunt
     extend ActiveSupport::Concern
 
     included do
+      attr_accessible :user_id, :reward_id, :points, :targetable_id, :targetable_type
+
       belongs_to :user
       belongs_to :reward
       belongs_to :targetable, :polymorphic => true

@@ -3,6 +3,8 @@ module TreasureHunt
     extend ActiveSupport::Concern
 
     included do
+      attr_accessible :name, :points, :limit, :every
+
       has_many :achievements
 
       validates_presence_of :name
